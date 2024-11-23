@@ -1,7 +1,9 @@
-import 'package:firebase_auth_app/components/custom_appbar.dart';
-import 'package:firebase_auth_app/components/drawer.dart';
-import 'package:firebase_auth_app/controllers/auth_controller.dart';
-import 'package:firebase_auth_app/utils/routes/routes_name.dart';
+// ignore_for_file: prefer_final_fields, unused_field
+
+import 'package:firebase_remainder_app/components/custom_appbar.dart';
+import 'package:firebase_remainder_app/components/drawer.dart';
+import 'package:firebase_remainder_app/controllers/auth_controller.dart';
+import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,7 +1,7 @@
-import 'package:firebase_auth_app/pages/home_page.dart';
-import 'package:firebase_auth_app/pages/register_page.dart';
-import 'package:firebase_auth_app/pages/sign_in_page.dart';
-import 'package:firebase_auth_app/utils/widget_tree.dart';
+import 'package:firebase_remainder_app/pages/home_page.dart';
+import 'package:firebase_remainder_app/pages/register_page.dart';
+import 'package:firebase_remainder_app/pages/sign_in_page.dart';
+import 'package:firebase_remainder_app/utils/widget_tree.dart';
 import 'package:flutter/material.dart';
 import './routes_name.dart';
 

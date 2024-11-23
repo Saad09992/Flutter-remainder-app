@@ -1,5 +1,5 @@
-import 'package:firebase_auth_app/components/custom_appbar.dart';
-import 'package:firebase_auth_app/components/drawer.dart';
+import 'package:firebase_remainder_app/components/custom_appbar.dart';
+import 'package:firebase_remainder_app/components/drawer.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

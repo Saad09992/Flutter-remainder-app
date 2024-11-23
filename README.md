@@ -1,3 +1,3 @@
-# firebase_auth_app
+# firebase_remainder_app
 
 A new Flutter project.

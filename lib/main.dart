@@ -1,6 +1,8 @@
-import 'package:firebase_auth_app/controllers/theme_controller.dart';
-import 'package:firebase_auth_app/utils/init_dependencies.dart';
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remainder_app/controllers/theme_controller.dart';
+import 'package:firebase_remainder_app/utils/init_dependencies.dart';
 import './utils/routes/routes.dart';
 import './utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';

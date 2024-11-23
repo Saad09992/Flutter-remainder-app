@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "183426788953",
-    "project_id": "flutter-8be85",
-    "storage_bucket": "flutter-8be85.firebasestorage.app"
+    "project_number": "185237316389",
+    "project_id": "remainder-app-f2cf0",
+    "storage_bucket": "remainder-app-f2cf0.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:183426788953:android:980e154d432e618abfcb48",
+        "mobilesdk_app_id": "1:185237316389:android:ae63c5fc4dda8081fb30cc",
         "android_client_info": {
-          "package_name": "com.example.firebase_auth_app"
+          "package_name": "com.example.firebase_remainder_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "185237316389-5pas8so5j8b1d72c02p6bkqjquoh7crd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCgHipD_LxMWUJtN5BV2BSImjis7Oah38E"
+          "current_key": "AIzaSyBore152OqMEDOPtGXHyjTN-SXPQj3RB44"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185237316389-5pas8so5j8b1d72c02p6bkqjquoh7crd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

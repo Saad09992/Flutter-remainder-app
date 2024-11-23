@@ -1,6 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-import 'package:firebase_auth_app/utils/routes/routes_name.dart';
-import 'package:firebase_auth_app/utils/utils.dart';
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
+import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
+import 'package:firebase_remainder_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -196,7 +196,7 @@ class AuthController extends GetxController {
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
     AuthCredential cred = GoogleAuthProvider.credential(
-        accessToken: googleAuth!.accessToken, idToken: googleAuth!.idToken);
+        accessToken: googleAuth!.accessToken, idToken: googleAuth.idToken);
 
     UserCredential userCreds =
         await FirebaseAuth.instance.signInWithCredential(cred);

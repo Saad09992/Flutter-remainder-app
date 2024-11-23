@@ -1,4 +1,4 @@
-package com.example.firebase_auth_app
+package com.example.firebase_remainder_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-import 'package:firebase_auth_app/controllers/theme_controller.dart';
+import 'package:firebase_remainder_app/controllers/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

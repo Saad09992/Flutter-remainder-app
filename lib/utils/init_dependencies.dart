@@ -1,4 +1,4 @@
-import 'package:firebase_auth_app/controllers/auth_controller.dart';
+import 'package:firebase_remainder_app/controllers/auth_controller.dart';
 import 'package:get/get.dart';
 
 class InitDependencies extends Bindings {
