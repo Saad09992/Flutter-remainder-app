@@ -1,6 +1,6 @@
 import 'package:firebase_remainder_app/controllers/auth_controller.dart';
 import 'package:firebase_remainder_app/pages/home_page.dart';
-import 'package:firebase_remainder_app/pages/sign_in_page.dart';
+import 'package:firebase_remainder_app/pages/auth/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

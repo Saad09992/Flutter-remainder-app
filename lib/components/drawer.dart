@@ -55,7 +55,11 @@ class CustomDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 if (authController.isAuthenticated)
-                  _buildDrawerItem(context, RoutesName.home, 'Home', Icons.home)
+                  _buildDrawerItem(
+                      context, RoutesName.home, 'Home', Icons.home),
+                if (authController.isAuthenticated)
+                  _buildDrawerItem(context, RoutesName.testing, 'Testing',
+                      Icons.construction)
                 else if (!authController.isAuthenticated)
                   _buildDrawerItem(
                       context, RoutesName.signup, 'Sign Up', Icons.person),
