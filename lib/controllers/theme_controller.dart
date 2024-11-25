@@ -4,16 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThemeController extends GetxController {
-  // Use RxInt to make it reactive
   RxInt _themeIndex = 0.obs;
 
-  // Define multiple theme modes for more variety
   final List<ThemeMode> _themeModes = [ThemeMode.light, ThemeMode.dark];
 
   ThemeMode get currentTheme => _themeModes[_themeIndex.value];
 
   void toggleTheme() {
-    // Cycle through theme modes
     _themeIndex.value = (_themeIndex.value + 1) % _themeModes.length;
     Get.changeThemeMode(_themeModes[_themeIndex.value]);
     print(_themeIndex.value);
@@ -22,7 +19,6 @@ class ThemeController extends GetxController {
 }
 
 class AppThemes {
-  // Light Theme with a modern, clean design
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.deepPurple,

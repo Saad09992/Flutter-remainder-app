@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:firebase_remainder_app/controllers/auth_controller.dart';
+import 'package:firebase_remainder_app/controllers/theme_controller.dart';
 import 'package:flutter/material.dart';
 import '../utils/routes/routes_name.dart';
 import 'package:get/get.dart';
@@ -8,7 +11,10 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthController authController = Get.put(AuthController());
+    AuthController authController = Get.find();
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor =
+        isDarkMode ? Colors.white : const Color.fromARGB(221, 46, 43, 43);
 
     return Drawer(
       child: Column(
@@ -39,8 +45,8 @@ class CustomDrawer extends StatelessWidget {
                   const SizedBox(height: 10),
                   Obx(() => Text(
                         authController.currentUser?.email ?? 'Guest User',
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: textColor,
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
@@ -56,16 +62,16 @@ class CustomDrawer extends StatelessWidget {
               children: <Widget>[
                 if (authController.isAuthenticated)
                   _buildDrawerItem(
-                      context, RoutesName.home, 'Home', Icons.home),
+                      context, RoutesName.home, 'Home', Icons.home, textColor),
                 if (authController.isAuthenticated)
                   _buildDrawerItem(context, RoutesName.testing, 'Testing',
-                      Icons.construction)
+                      Icons.construction, textColor)
                 else if (!authController.isAuthenticated)
-                  _buildDrawerItem(
-                      context, RoutesName.signup, 'Sign Up', Icons.person),
+                  _buildDrawerItem(context, RoutesName.signup, 'Sign Up',
+                      Icons.person, textColor),
                 if (!authController.isAuthenticated)
-                  _buildDrawerItem(
-                      context, RoutesName.signin, 'Sign In', Icons.login),
+                  _buildDrawerItem(context, RoutesName.signin, 'Sign In',
+                      Icons.login, textColor),
               ],
             ),
           ),
@@ -103,16 +109,16 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  ListTile _buildDrawerItem(
-      BuildContext context, String route, String title, IconData icon) {
+  ListTile _buildDrawerItem(BuildContext context, String route, String title,
+      IconData icon, Color textColor) {
     return ListTile(
       leading: Icon(icon, color: Colors.blueAccent),
       title: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
-          color: Colors.black87,
+          color: textColor,
         ),
       ),
       onTap: () {

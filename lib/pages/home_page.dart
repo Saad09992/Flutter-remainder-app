@@ -1,6 +1,7 @@
 import 'package:firebase_remainder_app/components/custom_appbar.dart';
 import 'package:firebase_remainder_app/components/drawer.dart';
 import 'package:firebase_remainder_app/controllers/anime_controller.dart';
+import 'package:firebase_remainder_app/gen/assets.gen.dart';
 import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,10 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final AnimeController _animeController = Get.find();
-
   @override
   Widget build(BuildContext context) {
+    AnimeController _animeController = Get.find();
     return Scaffold(
       appBar: const CustomAppBar(title: "Home"),
       drawer: const CustomDrawer(),
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           // Anime background image covering the full screen
           Positioned.fill(
             child: Image.asset(
-              'assets/images/dragon.jpg',
+              Assets.images.dragon.path,
               fit: BoxFit.cover,
             ),
           ),
@@ -37,7 +37,9 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, RoutesName.catagoryPage);
+                  _animeController.getAllAnimeData().then((val) {
+                    Navigator.pushNamed(context, RoutesName.animeDisplayPage);
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:

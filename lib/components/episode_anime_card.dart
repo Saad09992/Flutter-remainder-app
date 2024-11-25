@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
-class AnimeCard extends StatelessWidget {
+class EpisodeAnimeCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String genre;
+  final String totalEpisodes;
   final String rating;
   final String description;
   final VoidCallback onTap;
 
-  const AnimeCard({
+  const EpisodeAnimeCard({
     Key? key,
     required this.imageUrl,
     required this.title,
+    required this.totalEpisodes,
     required this.genre,
     required this.rating,
     required this.description,
@@ -22,10 +24,10 @@ class AnimeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
-          horizontal: 8, vertical: 3), // Adds separation between cards
+          horizontal: 14, vertical: 5), // Adds separation between cards
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
+        color: const Color.fromARGB(255, 55, 53, 53),
       ),
       child: InkWell(
         onTap: onTap,
@@ -36,16 +38,15 @@ class AnimeCard extends StatelessWidget {
             children: [
               // Image Section
               ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(12), // Fully rounded corners
+                borderRadius: BorderRadius.circular(12),
                 child: Image.network(
                   imageUrl,
-                  width: 125,
-                  height: 175,
+                  width: 150,
+                  height: 200,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
-                    width: 100,
-                    height: 140,
+                    width: 200,
+                    height: 240,
                     color: Colors.grey[300],
                     child: const Icon(
                       Icons.broken_image,
@@ -60,25 +61,30 @@ class AnimeCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize:
-                      MainAxisSize.min, // Avoid expanding unnecessarily
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       title,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: Color.fromARGB(221, 255, 254, 254),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    // const SizedBox(height: 2),
+                    Text(
+                      "$totalEpisodes Episodes",
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color.fromARGB(221, 255, 254, 254),
+                      ),
+                    ),
                     Text(
                       genre,
                       style: const TextStyle(
                         fontSize: 13,
-                        color: Colors.black54,
+                        color: Color.fromARGB(221, 255, 254, 254),
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -89,7 +95,7 @@ class AnimeCard extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: Color.fromARGB(221, 255, 254, 254),
                           ),
                         ),
                         const SizedBox(width: 4),
@@ -100,19 +106,24 @@ class AnimeCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
-                      description,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.black54,
+                    // Flexible description text
+                    Flexible(
+                      child: Text(
+                        description,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color.fromARGB(221, 255, 254, 254),
+                        ),
+                        maxLines: 4, // Limit the number of lines
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(height: 13),
                     ElevatedButton(
                       onPressed: onTap,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),

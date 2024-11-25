@@ -1,4 +1,5 @@
 import 'package:firebase_remainder_app/pages/anime/anime_display_page.dart';
+import 'package:firebase_remainder_app/pages/anime/anime_episode_list_page.dart';
 import 'package:firebase_remainder_app/pages/anime/catagory_page.dart';
 import 'package:firebase_remainder_app/pages/home_page.dart';
 import 'package:firebase_remainder_app/pages/auth/register_page.dart';
@@ -39,6 +40,9 @@ class Routes {
       case RoutesName.animeDisplayPage:
         return MaterialPageRoute(
             builder: (BuildContext context) => const AnimeDisplayPage());
+      case RoutesName.AnimeEpisodeListPage:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const AnimeEpisodeListPage());
       // display this if route is invalid
       default:
         return MaterialPageRoute(builder: (_) {

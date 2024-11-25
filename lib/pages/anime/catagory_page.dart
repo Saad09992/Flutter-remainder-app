@@ -1,5 +1,5 @@
 import 'package:firebase_remainder_app/controllers/anime_controller.dart';
-import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
+import 'package:firebase_remainder_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_remainder_app/components/catagory_card.dart';
 import 'package:firebase_remainder_app/components/custom_appbar.dart';
@@ -17,7 +17,7 @@ class CatagoryPage extends StatelessWidget {
       body: ListView(
         children: [
           CategoryCard(
-            imagePath: 'assets/images/dragon_pic.jpg',
+            imagePath: Assets.images.dragonPic.path,
             title: 'Dragon',
             description: 'Anime related to dragons.',
             onTap: () {
@@ -25,7 +25,7 @@ class CatagoryPage extends StatelessWidget {
             },
           ),
           CategoryCard(
-            imagePath: 'assets/images/demon.jpg',
+            imagePath: Assets.images.demon.path,
             title: 'Demon',
             description: 'Anime related to demon.',
             onTap: () {
@@ -33,7 +33,7 @@ class CatagoryPage extends StatelessWidget {
             },
           ),
           CategoryCard(
-            imagePath: 'assets/images/fighting.jpg',
+            imagePath: Assets.images.fighting.path,
             title: 'Fighting',
             description: 'Anime related to fightig.',
             onTap: () {

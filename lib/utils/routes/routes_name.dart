@@ -7,4 +7,5 @@ class RoutesName {
   static const String testingAdd = 'testing_add_page';
   static const String catagoryPage = 'catagory_page';
   static const String animeDisplayPage = 'anime_display_page';
+  static const String AnimeEpisodeListPage = 'anime_episode_list_page';
 }
