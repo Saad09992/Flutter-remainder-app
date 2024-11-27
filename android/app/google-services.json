@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "185237316389",
+    "firebase_url": "https://remainder-app-f2cf0-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "remainder-app-f2cf0",
     "storage_bucket": "remainder-app-f2cf0.firebasestorage.app"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "185237316389-gut8gnm0hjr1ukmrol08sbc0edgudsbr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_remainder_app",
+            "certificate_hash": "be5fae950d61fe1c1c5fbe78c504e42f5f43bc69"
+          }
+        },
         {
           "client_id": "185237316389-5pas8so5j8b1d72c02p6bkqjquoh7crd.apps.googleusercontent.com",
           "client_type": 3

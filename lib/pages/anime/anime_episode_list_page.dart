@@ -1,6 +1,7 @@
 import 'package:firebase_remainder_app/components/anime_episode_card.dart';
 import 'package:firebase_remainder_app/components/anime_episode_main_card.dart';
 import 'package:firebase_remainder_app/controllers/anime_controller.dart';
+import 'package:firebase_remainder_app/pages/anime/video_player_page.dart';
 import 'package:firebase_remainder_app/utils/local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -180,9 +181,10 @@ class AnimeEpisodeListPage extends StatelessWidget {
               ...anime.episodes.map((episode) {
                 return AnimeEpisodeCard(
                   episodeNumber: episode.number.toString(),
-                  episodeTitle: 'Episode ${episode.number}',
+                  episodeTitle: 'Episode ${episode.id}',
                   onPlay: () {
-                    print(anime.id);
+                    print(episode);
+                    _animeController.getEpisodeStreamingLink(episode.id, context);
                   },
                   thumbnailUrl: anime.image,
                 );

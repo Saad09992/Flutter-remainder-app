@@ -1,16 +1,20 @@
 // ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names, invalid_use_of_protected_member
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_remainder_app/models/anime_ep_link_model/anime_ep_link_model.dart';
 import 'package:firebase_remainder_app/models/anime_episodes_model/anime_ep_model.dart';
 import 'package:firebase_remainder_app/models/anime_model/anime_model.dart';
 import 'package:firebase_remainder_app/network/network_api_service.dart';
 import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
 import 'package:firebase_remainder_app/utils/urls.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 import '../models/top_anime_model/top_anime_model.dart';
+import '../pages/anime/video_player_page.dart';
 
 class AnimeController extends GetxController {
   final NetworkApiService _apiService = NetworkApiService();
@@ -20,6 +24,22 @@ class AnimeController extends GetxController {
 
   final RxList<AnimeModel> _animeModel = <AnimeModel>[].obs;
   get animeModel => _animeModel.value;
+
+  // final Rx<AnimeEpLinkModel?> _animeEpLinkModel = Rx<AnimeEpLinkModel?>(null);
+  // get animeEpLinkModel => _animeEpLinkModel.value;
+
+  final RxString _selectedQuality = RxString('360p'); // Default quality
+  get selectedQuality => _selectedQuality.value;
+
+  final Rx<AnimeEpLinkModel> _animeEpLinkModel = Rx<AnimeEpLinkModel>(
+    AnimeEpLinkModel(
+      headers: {},  // Empty map for headers
+      sources: [],  // Empty list for sources
+      download: '', // Empty string for download link
+    ),
+  );
+
+  get animeEpLinkModel => _animeEpLinkModel.value;
 
   final RxList<TopAnimeModel> _topAnimeModel = <TopAnimeModel>[].obs;
   get topAnimeModel => _topAnimeModel.value;
@@ -122,6 +142,69 @@ class AnimeController extends GetxController {
       rethrow;
     }
   }
+
+  Future<void> getEpisodeStreamingLink(String id, BuildContext context) async {
+    try {
+      // Fetch the API response
+      final res = await _apiService.getGetApiResponse('${Urls.getStreamingLink}$id?server=gogocdn');
+
+      // Decode the response into the model
+      final episodeLink = AnimeEpLinkModel.fromJson(res);
+
+      // Store the response in the Rx variable
+      _animeEpLinkModel.value = episodeLink;
+
+      // Filter the sources based on the selected quality
+      final filteredSources = episodeLink.sources
+          .where((source) => source.quality == selectedQuality)
+          .toList();
+
+      // Check if we have any filtered sources for the selected quality
+      if (filteredSources.isNotEmpty) {
+        final selectedSource = filteredSources[0]; // Use the first matching source
+        print('Selected URL: ${selectedSource.url}');
+        print("Available Sources: ${animeEpLinkModel.sources}");
+// Print the URL of the selected source
+
+        // Navigate to video player
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoPlayerScreen(), // Pass the selected URL to the video player
+          ),
+        );
+      } else {
+        print('No sources available for the selected quality');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching episode streaming link: $e');
+      }
+      rethrow;
+    }
+  }
+
+
+
+  void selectQuality(String quality) {
+    print(quality);
+    _selectedQuality.value = quality;
+    update();  // Ensure the controller updates and notifies listeners
+  }
+
+
+  // Get the URL based on the selected quality
+  String getUrlForSelectedQuality() {
+    try {
+      return animeEpLinkModel.sources
+          .firstWhere((source) => source.quality == selectedQuality)
+          .url;
+    } catch (e) {
+      print('Quality not found: $e');
+      return '';  // Return a fallback URL or handle error appropriately
+    }
+  }
+
 
   void selectCatagory(String type) {
     try {

@@ -11,6 +11,8 @@
     <application
         android:label="firebase_remainder_app"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
 
         <!-- Only keep this one service declaration -->

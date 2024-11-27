@@ -1,13 +1,16 @@
 import 'package:firebase_remainder_app/pages/anime/anime_display_page.dart';
 import 'package:firebase_remainder_app/pages/anime/anime_episode_list_page.dart';
 import 'package:firebase_remainder_app/pages/anime/catagory_page.dart';
+import 'package:firebase_remainder_app/pages/anime/video_player_page.dart';
 import 'package:firebase_remainder_app/pages/home_page.dart';
 import 'package:firebase_remainder_app/pages/auth/register_page.dart';
 import 'package:firebase_remainder_app/pages/auth/sign_in_page.dart';
 import 'package:firebase_remainder_app/pages/testing/testing_add_page.dart';
 import 'package:firebase_remainder_app/pages/testing/testing_page.dart';
+import 'package:firebase_remainder_app/pages/testing/testing_video_page.dart';
 import 'package:firebase_remainder_app/utils/widget_tree.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import './routes_name.dart';
 
 class Routes {
@@ -43,6 +46,9 @@ class Routes {
       case RoutesName.AnimeEpisodeListPage:
         return MaterialPageRoute(
             builder: (BuildContext context) => const AnimeEpisodeListPage());
+      case RoutesName.testingVideoPage:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const  VideoApp());
       // display this if route is invalid
       default:
         return MaterialPageRoute(builder: (_) {
