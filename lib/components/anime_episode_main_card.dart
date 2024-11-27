@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EpisodeAnimeCard extends StatelessWidget {
+class AnimeEpisodeMainCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String genre;
@@ -9,8 +9,8 @@ class EpisodeAnimeCard extends StatelessWidget {
   final String description;
   final VoidCallback onTap;
 
-  const EpisodeAnimeCard({
-    Key? key,
+  const AnimeEpisodeMainCard({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.totalEpisodes,
@@ -18,7 +18,7 @@ class EpisodeAnimeCard extends StatelessWidget {
     required this.rating,
     required this.description,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class EpisodeAnimeCard extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Watch Now',
+                        'Set Remainder',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

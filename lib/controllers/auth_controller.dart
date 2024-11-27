@@ -200,7 +200,7 @@ class AuthController extends GetxController {
 
     UserCredential userCreds =
         await FirebaseAuth.instance.signInWithCredential(cred);
-    print(userCreds.user.toString());
+    print(userCreds.user!.uid.toString());
     Get.offAllNamed(RoutesName.home);
   }
 }

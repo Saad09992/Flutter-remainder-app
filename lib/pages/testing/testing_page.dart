@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, unused_field, avoid_unnecessary_containers, avoid_print
 
 import 'dart:async';
 
@@ -7,9 +7,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_remainder_app/components/drawer.dart';
 import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
 import 'package:firebase_remainder_app/utils/utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TestingPage extends StatefulWidget {
   const TestingPage({super.key});
@@ -25,7 +23,6 @@ class _TestingPageState extends State<TestingPage> {
   final TextEditingController _editingController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  bool _isPasswordVisible = false;
 
   final dbRef = FirebaseDatabase.instance.ref('users');
 

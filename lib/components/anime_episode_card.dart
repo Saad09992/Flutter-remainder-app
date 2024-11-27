@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 
 class AnimeEpisodeCard extends StatelessWidget {
@@ -31,7 +33,7 @@ class AnimeEpisodeCard extends StatelessWidget {
             decoration: BoxDecoration(
               image: thumbnailUrl != null
                   ? DecorationImage(
-                      image: NetworkImage(thumbnailUrl!),
+                      image: NetworkImage(thumbnailUrl),
                       fit: BoxFit.cover,
                     )
                   : null,
@@ -39,7 +41,6 @@ class AnimeEpisodeCard extends StatelessWidget {
             ),
           ),
 
-          // Episode info section
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12),

@@ -19,11 +19,16 @@ dependencies:
   firebase_database: ^11.1.6
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
+  intl: ^0.19.0
+  flutter_local_notifications: ^18.0.1
+  flutter_timezone: ^3.0.1
+  rxdart: ^0.28.0
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   build_runner: ^2.4.13
   flutter_gen_runner:
   freezed: ^2.5.7
@@ -32,4 +37,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images
+    - assets/images/dragon.jpg
+    - assets/images/dragon_pic.jpg
+    - assets/images/demon.jpg
+    - assets/images/fighting.jpg
+    - assets/images/google_logo.png

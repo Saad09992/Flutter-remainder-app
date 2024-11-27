@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_remainder_app/controllers/auth_controller.dart';
-import 'package:firebase_remainder_app/controllers/theme_controller.dart';
 import 'package:flutter/material.dart';
 import '../utils/routes/routes_name.dart';
 import 'package:get/get.dart';

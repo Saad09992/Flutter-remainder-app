@@ -1,11 +1,9 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, avoid_types_as_parameter_names, non_constant_identifier_names
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, avoid_types_as_parameter_names, non_constant_identifier_names, unused_local_variable, dead_code
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_remainder_app/components/drawer.dart';
 import 'package:firebase_remainder_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TestingAddPage extends StatefulWidget {
   const TestingAddPage({super.key});
@@ -26,9 +24,9 @@ class _TestingAddPageState extends State<TestingAddPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Testing Page'),
+        title: const Text('Testing Page'),
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,7 +1,10 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
+
 import 'package:firebase_remainder_app/components/custom_appbar.dart';
 import 'package:firebase_remainder_app/components/drawer.dart';
 import 'package:firebase_remainder_app/controllers/anime_controller.dart';
 import 'package:firebase_remainder_app/gen/assets.gen.dart';
+import 'package:firebase_remainder_app/utils/local_notifications.dart';
 import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +18,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    listenToNotifications();
+    super.initState();
+  }
+  
+  AnimeController _animeController = Get.find();
+
+  listenToNotifications() {
+    print('listening to notifications');
+    LocalNotifications.onClickNotification.stream.listen((event) async {
+      print('Notification payload received: $event');
+      try {
+        // Ensure you're passing the correct identifier to getSpecificAnimeData
+        await _animeController.getSpecificAnimeData(event);
+        print('Anime data retrieved successfully');
+        Get.toNamed(RoutesName.AnimeEpisodeListPage);
+      } catch (error) {
+        print('Error retrieving anime data: $error');
+      }
+    });
+  }
+
+
+
+
+  @override
   Widget build(BuildContext context) {
     AnimeController _animeController = Get.find();
     return Scaffold(
@@ -22,25 +51,24 @@ class _HomePageState extends State<HomePage> {
       drawer: const CustomDrawer(),
       body: Stack(
         children: [
-          // Anime background image covering the full screen
           Positioned.fill(
             child: Image.asset(
               Assets.images.dragon.path,
               fit: BoxFit.cover,
             ),
           ),
-          // Get Started button at the bottom
           Positioned(
             bottom: 50,
             left: 0,
             right: 0,
             child: Center(
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async{
                   _animeController.getAllAnimeData().then((val) {
                     Navigator.pushNamed(context, RoutesName.animeDisplayPage);
                   });
-                },
+
+                  },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
                       Colors.black.withOpacity(0.7), // Semi-transparent button

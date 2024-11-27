@@ -1,18 +1,20 @@
 // ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names, invalid_use_of_protected_member
 
-import 'package:firebase_remainder_app/components/anime_episode_card.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_remainder_app/models/anime_episodes_model/anime_ep_model.dart';
 import 'package:firebase_remainder_app/models/anime_model/anime_model.dart';
 import 'package:firebase_remainder_app/network/network_api_service.dart';
 import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
 import 'package:firebase_remainder_app/utils/urls.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 import '../models/top_anime_model/top_anime_model.dart';
 
 class AnimeController extends GetxController {
   final NetworkApiService _apiService = NetworkApiService();
+  final _firebaseDatabase = FirebaseDatabase.instance.ref();
 
   final RxString _type = ''.obs;
 
@@ -25,6 +27,19 @@ class AnimeController extends GetxController {
   final RxList<AnimeEpisodeModel> _animeEpisodeModel =
       <AnimeEpisodeModel>[].obs;
   get animeEpisodeModel => _animeEpisodeModel.value;
+
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
+
+  Future<void> setRemainder(String animeId, String dateTime)async{
+    try{
+      final uid = await _storage.read(key: 'user_id');
+      await _firebaseDatabase.child('remainders/$uid/$animeId').set(dateTime).then((val){
+        print("data saved successfully");
+      });
+    }catch(e){
+      rethrow;
+    }
+  }
 
   Future<void> getAllAnimeData() async {
     try {
@@ -88,7 +103,6 @@ class AnimeController extends GetxController {
       // Fetch specific anime data from the API
       final res = await _apiService
           .getGetApiResponse('${Urls.getSpecificAnimeData}$id');
-
       if (res is Map<String, dynamic>) {
         // Parse data into AnimeEpisodeModel
         final animeEpisode = AnimeEpisodeModel.fromJson(res);
