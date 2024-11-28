@@ -16,7 +16,57 @@ class AnimeEpisodeListPage extends StatelessWidget {
 
     final TextEditingController _animeIdController = TextEditingController();
     final TextEditingController _animeImageController = TextEditingController();
-    final TextEditingController _dateTimeController = TextEditingController();
+    final TextEditingController _dayTimeController = TextEditingController();
+
+
+    DateTime _getNextOccurrenceOfDay(String dayName, String timeString) {
+      DateTime now = DateTime.now();
+
+      TimeOfDay time = TimeOfDay.fromDateTime(DateFormat('h:mm a').parse(timeString));
+
+      DateTime scheduledDateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          time.hour,
+          time.minute
+      );
+
+      String currentDayName = DateFormat('EEEE').format(now);
+
+      if (dayName == currentDayName) {
+        if (scheduledDateTime.isAfter(now)) {
+          return scheduledDateTime;
+        }
+        return scheduledDateTime.add(const Duration(days: 7));
+      }
+
+      final days = {
+        'Monday': DateTime.monday,
+        'Tuesday': DateTime.tuesday,
+        'Wednesday': DateTime.wednesday,
+        'Thursday': DateTime.thursday,
+        'Friday': DateTime.friday,
+        'Saturday': DateTime.saturday,
+        'Sunday': DateTime.sunday,
+      };
+
+      int targetWeekday = days[dayName]!;
+      int daysUntilNextDay = targetWeekday - now.weekday;
+      if (daysUntilNextDay <= 0) {
+        daysUntilNextDay += 7;
+      }
+
+      DateTime nextOccurrence = now.add(Duration(days: daysUntilNextDay));
+
+      return DateTime(
+          nextOccurrence.year,
+          nextOccurrence.month,
+          nextOccurrence.day,
+          time.hour,
+          time.minute
+      );
+    }
 
     void _showAddReminderDialog(String animeId, String animeImage) {
       showDialog(
@@ -25,8 +75,8 @@ class AnimeEpisodeListPage extends StatelessWidget {
           _animeIdController.text = animeId;
           _animeImageController.text = animeImage;
 
-          // Initialize datetime controller with current datetime
-          _dateTimeController.text = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+          // Initialize with current time
+          _dayTimeController.text = '';
 
           return AlertDialog(
             title: const Text('Add Reminder'),
@@ -40,44 +90,55 @@ class AnimeEpisodeListPage extends StatelessWidget {
                       labelText: 'Anime ID',
                       hintText: 'Enter Anime ID',
                     ),
-                    readOnly: true, // Pre-fill with anime ID
+                    readOnly: true,
                   ),
 
                   const SizedBox(height: 16),
                   TextField(
-                    controller: _dateTimeController,
+                    controller: _dayTimeController,
                     decoration: const InputDecoration(
-                      labelText: 'Reminder Date and Time',
-                      hintText: 'Select Reminder Date and Time',
+                      labelText: 'Reminder Day and Time',
+                      hintText: 'Select Day and Time',
                     ),
                     onTap: () async {
-                      // Show datetime picker
-                      DateTime? pickedDateTime = await showDatePicker(
+                      // Get current day name
+                      final currentDayName = DateFormat('EEEE').format(DateTime.now());
+
+                      // Show day picker
+                      final List<String> days = [
+                        currentDayName,
+                        'Monday', 'Tuesday', 'Wednesday',
+                        'Thursday', 'Friday', 'Saturday', 'Sunday'
+                      ];
+
+                      // Show day selection
+                      String? selectedDay = await showDialog<String>(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            title: const Text('Select Day'),
+                            children: days.map((day) {
+                              return SimpleDialogOption(
+                                onPressed: () {
+                                  Navigator.pop(context, day);
+                                },
+                                child: Text(day),
+                              );
+                            }).toList(),
+                          );
+                        },
                       );
 
-                      if (pickedDateTime != null) {
-                        // If date is selected, show time picker
+                      if (selectedDay != null) {
+                        // Show time picker
                         TimeOfDay? pickedTime = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                         );
 
                         if (pickedTime != null) {
-                          // Combine date and time
-                          DateTime finalDateTime = DateTime(
-                            pickedDateTime.year,
-                            pickedDateTime.month,
-                            pickedDateTime.day,
-                            pickedTime.hour,
-                            pickedTime.minute,
-                          );
-
-                          // Update the controller with formatted datetime
-                          _dateTimeController.text = DateFormat('yyyy-MM-dd HH:mm').format(finalDateTime);
+                          // Combine day and time
+                          _dayTimeController.text = '$selectedDay ${pickedTime.format(context)}';
                         }
                       }
                     },
@@ -95,44 +156,49 @@ class AnimeEpisodeListPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (_dateTimeController.text.isEmpty) {
+                  if (_dayTimeController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please select a date and time')),
+                      const SnackBar(content: Text('Please select a day and time')),
                     );
                     return;
                   }
 
-                  // Parse the scheduled time
-                  DateTime? scheduledTime;
-                  try {
-                    scheduledTime = DateFormat('yyyy-MM-dd HH:mm').parse(_dateTimeController.text);
-                  } catch (e) {
+                  // Parse the day and time
+                  List<String> dayTimeParts = _dayTimeController.text.split(' ');
+                  if (dayTimeParts.length < 3) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Invalid date and time format')),
+                      const SnackBar(content: Text('Invalid day and time format')),
                     );
                     return;
                   }
+
+                  // Get the day and time
+                  String selectedDay = dayTimeParts[0];
+                  String timeString = dayTimeParts.sublist(1).join(' ');
+
+                  // Calculate the scheduled time
+                  DateTime scheduledTime = _getNextOccurrenceOfDay(selectedDay, timeString);
 
                   // Schedule the notification
                   LocalNotifications.setScheduleNotification(
                     title: "Reminder",
                     body: "Watch ${_animeIdController.text} now!",
                     scheduledTime: scheduledTime,
+                    day: selectedDay,
                     imageUrl: _animeImageController.text,
-                    payload: _animeIdController.text,
+                    animeId: _animeIdController.text,
                   );
-
 
                   Navigator.of(context).pop();
                 },
                 child: const Text('Submit'),
               ),
-
             ],
           );
         },
       );
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 54, 52, 52),
@@ -140,21 +206,18 @@ class AnimeEpisodeListPage extends StatelessWidget {
       ),
       backgroundColor: const Color.fromARGB(255, 54, 52, 52),
       body: Obx(() {
-        // Check if there is data available
         if (_animeController.animeEpisodeModel.isEmpty) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        // Get the first AnimeEpisodeModel for display
         final anime = _animeController.animeEpisodeModel.first;
 
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Display main Anime details
               Container(
                 height: 300,
                 padding: const EdgeInsets.symmetric(vertical: 16),

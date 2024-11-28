@@ -1,3 +1,5 @@
+
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -20,8 +22,6 @@ class LocalNotifications {
       onClickNotification.add(notificationResponse.payload!);
     }
   }
-
-
 
   static Future<void> init() async {
     await createNotificationChannel(); // Add this line
@@ -46,70 +46,53 @@ class LocalNotifications {
     debugPrint('Notification tapped: ${notificationResponse.payload}');
   }
 
-  // Method to show a simple notification
-  static Future<void> showSimpleNotification({
-    required String title,
-    required String body,
-    String? payload,
-  }) async {
-    // Android notification details
-    const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
-      'your_channel_id', // Unique channel ID
-      'Your Channel Name', // Channel name
-      channelDescription: 'Your channel description',
-      importance: Importance.high,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-
-    // Notification details
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-
-    // Show the notification
-    await flutterLocalNotificationsPlugin.show(
-      0, // Notification ID (can be unique for each notification)
-      title,
-      body,
-      notificationDetails,
-      payload: payload,
-    );
-  }
-
   static  Future<void> cancelNotification(int id)async{
-    await flutterLocalNotificationsPlugin.cancel(id);
+    await flutterLocalNotificationsPlugin.cancel(id).then((val){
+      print('$id deleted succesfully');
+    });
   }
+
   static Future<void> cancelAllNotifications()async{
-    await flutterLocalNotificationsPlugin.cancelAll();
+    await flutterLocalNotificationsPlugin.cancelAll().then((val){print('All deleteded');});
   }
 
-
+  static Future<List> getAllActiveNotifications()async{
+    try{
+      final List<PendingNotificationRequest> activeNotifications = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+      return activeNotifications;
+    }catch (error){rethrow;}
+  }
 
   static Future<void> setScheduleNotification({
     required String title,
     required String body,
     required DateTime scheduledTime,
-    String? payload,
-    String? imageUrl, // Image URL
+    required String day,
+    String? animeId,
+    String? imageUrl,
   }) async {
     try {
-      // Validate scheduled time is in the future
-      if (scheduledTime.isBefore(DateTime.now())) {
-        print('Error: Scheduled time must be in the future');
-        return;
-      }
+      print('day: $day');
+      print('Current time: ${DateTime.now()}');
+      print('Scheduled time: $scheduledTime');
 
       // Initialize timezone
       tz.initializeTimeZones();
       final pakistanTimezone = tz.getLocation('Asia/Karachi');
       tz.setLocalLocation(pakistanTimezone);
 
-      final tz.TZDateTime scheduleDate = tz.TZDateTime.from(
+      // Convert the scheduled time to a weekly recurring schedule
+      final tz.TZDateTime firstScheduleDate = tz.TZDateTime.from(
         scheduledTime,
         pakistanTimezone,
       );
+
+      String payload = json.encode({
+        'day': day,
+        'scheduledTime': scheduledTime.toIso8601String(),
+        'animeId': animeId,
+        'isRepeating': true
+      });
 
       String? localImagePath;
       if (imageUrl != null && imageUrl.isNotEmpty) {
@@ -144,12 +127,12 @@ class LocalNotifications {
       // Configure Android notification details
       final AndroidNotificationDetails androidNotificationDetails =
       AndroidNotificationDetails(
-        'precise_notification_channel',
-        'Precise Notifications',
-        channelDescription: 'Notifications with precise timing',
+        'precise_weekly_notification_channel',
+        'Precise Weekly Notifications',
+        channelDescription: 'Weekly notifications with precise timing',
         importance: Importance.high,
         priority: Priority.high,
-        styleInformation: bigPictureStyle, // Attach BigPictureStyle
+        styleInformation: bigPictureStyle,
       );
 
       final NotificationDetails notificationDetails = NotificationDetails(
@@ -158,26 +141,24 @@ class LocalNotifications {
 
       int notificationId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
 
-      // Schedule the notification
       await flutterLocalNotificationsPlugin.zonedSchedule(
         notificationId,
         title,
         body,
-        scheduleDate,
+        firstScheduleDate,
         notificationDetails,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.exact,
         payload: payload,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime, // This makes the notification repeat weekly
       );
 
-      print('Notification scheduled successfully for: $scheduleDate');
+      print('Weekly notification scheduled successfully for: $firstScheduleDate');
     } catch (e, stackTrace) {
       print('Notification Scheduling Error: $e');
       print('Stack Trace: $stackTrace');
     }
   }
-
-
 
 
   static Future<void> createNotificationChannel() async {

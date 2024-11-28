@@ -10,4 +10,5 @@ class RoutesName {
   static const String AnimeEpisodeListPage = 'anime_episode_list_page';
   static const String animeVideoPage = 'anime_video_page';
   static const String testingVideoPage = 'testing_video_page';
+  static const String remainderManagementPage = 'remainder_management_page';
 }

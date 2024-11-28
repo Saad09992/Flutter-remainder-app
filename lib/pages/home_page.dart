@@ -1,8 +1,11 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:firebase_remainder_app/components/custom_appbar.dart';
 import 'package:firebase_remainder_app/components/drawer.dart';
 import 'package:firebase_remainder_app/controllers/anime_controller.dart';
+import 'package:firebase_remainder_app/controllers/remainder_controller.dart';
 import 'package:firebase_remainder_app/gen/assets.gen.dart';
 import 'package:firebase_remainder_app/utils/local_notifications.dart';
 import 'package:firebase_remainder_app/utils/routes/routes_name.dart';
@@ -30,8 +33,8 @@ class _HomePageState extends State<HomePage> {
     LocalNotifications.onClickNotification.stream.listen((event) async {
       print('Notification payload received: $event');
       try {
-        // Ensure you're passing the correct identifier to getSpecificAnimeData
-        await _animeController.getSpecificAnimeData(event);
+        final payload = jsonDecode(event);
+        await _animeController.getSpecificAnimeData(payload['animeId']);
         print('Anime data retrieved successfully');
         Get.toNamed(RoutesName.AnimeEpisodeListPage);
       } catch (error) {

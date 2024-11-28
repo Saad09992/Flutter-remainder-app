@@ -10,6 +10,8 @@ import 'package:firebase_remainder_app/components/anime_card.dart';
 import 'package:firebase_remainder_app/components/anime_carosel_card.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/remainder_controller.dart';
+
 class AnimeDisplayPage extends StatefulWidget {
   const AnimeDisplayPage({super.key});
 
@@ -26,6 +28,7 @@ class _AnimeDisplayPageState extends State<AnimeDisplayPage> {
   TextEditingController _searchController = TextEditingController();
   RxList<AnimeModel> _filteredAnime = RxList<AnimeModel>([]);
   bool _isSearchVisible = false;
+  RemainderController _remainderController = Get.find();
 
   @override
   void initState() {
@@ -86,30 +89,39 @@ class _AnimeDisplayPageState extends State<AnimeDisplayPage> {
         automaticallyImplyLeading: false,
         title: _isSearchVisible
             ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Search Anime',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.close, color: Colors.grey),
-                    onPressed: _toggleSearchBar,
-                  ),
-                ),
-              )
+          controller: _searchController,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: 'Search Anime',
+            hintStyle: TextStyle(color: Colors.grey),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: Icon(Icons.close, color: Colors.grey),
+              onPressed: _toggleSearchBar,
+            ),
+          ),
+        )
             : Text(
-                "Now",
-                style: TextStyle(color: Colors.black),
-              ),
+          "Now",
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
           if (!_isSearchVisible)
             IconButton(
               icon: Icon(Icons.search, color: Colors.grey),
               onPressed: _toggleSearchBar,
             ),
+          IconButton(
+            icon: Icon(Icons.alarm_on_sharp, color: Colors.grey),
+            onPressed: () {
+              _remainderController.getRemaindersData().then((val){
+                Get.toNamed(RoutesName.remainderManagementPage);
+              });
+            },
+          ),
         ],
       ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

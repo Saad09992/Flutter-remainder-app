@@ -111,7 +111,7 @@ class AnimeController extends GetxController {
         final animeList = results
             .map((data) => TopAnimeModel.fromJson(data as Map<String, dynamic>))
             .toList();
-        _topAnimeModel.value = animeList; // Assuming _animeModel is a List.
+        _topAnimeModel.value = animeList;
       }
     } catch (e) {
       rethrow;
@@ -120,15 +120,12 @@ class AnimeController extends GetxController {
 
   Future<void> getSpecificAnimeData(String id) async {
     try {
-      // Fetch specific anime data from the API
       final res = await _apiService
           .getGetApiResponse('${Urls.getSpecificAnimeData}$id');
       if (res is Map<String, dynamic>) {
-        // Parse data into AnimeEpisodeModel
         final animeEpisode = AnimeEpisodeModel.fromJson(res);
 
-        // Update the reactive list
-        _animeEpisodeModel.clear(); // Clear previous data
+        _animeEpisodeModel.clear();
         _animeEpisodeModel.add(animeEpisode);
       } else {
         if (kDebugMode) {
@@ -145,28 +142,21 @@ class AnimeController extends GetxController {
 
   Future<void> getEpisodeStreamingLink(String id, BuildContext context) async {
     try {
-      // Fetch the API response
       final res = await _apiService.getGetApiResponse('${Urls.getStreamingLink}$id?server=gogocdn');
 
-      // Decode the response into the model
       final episodeLink = AnimeEpLinkModel.fromJson(res);
 
-      // Store the response in the Rx variable
       _animeEpLinkModel.value = episodeLink;
 
-      // Filter the sources based on the selected quality
       final filteredSources = episodeLink.sources
           .where((source) => source.quality == selectedQuality)
           .toList();
 
-      // Check if we have any filtered sources for the selected quality
       if (filteredSources.isNotEmpty) {
-        final selectedSource = filteredSources[0]; // Use the first matching source
+        final selectedSource = filteredSources[0];
         print('Selected URL: ${selectedSource.url}');
         print("Available Sources: ${animeEpLinkModel.sources}");
-// Print the URL of the selected source
 
-        // Navigate to video player
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -184,16 +174,12 @@ class AnimeController extends GetxController {
     }
   }
 
-
-
   void selectQuality(String quality) {
     print(quality);
     _selectedQuality.value = quality;
-    update();  // Ensure the controller updates and notifies listeners
+    update();
   }
 
-
-  // Get the URL based on the selected quality
   String getUrlForSelectedQuality() {
     try {
       return animeEpLinkModel.sources
@@ -201,10 +187,9 @@ class AnimeController extends GetxController {
           .url;
     } catch (e) {
       print('Quality not found: $e');
-      return '';  // Return a fallback URL or handle error appropriately
+      return '';
     }
   }
-
 
   void selectCatagory(String type) {
     try {
@@ -214,4 +199,5 @@ class AnimeController extends GetxController {
       rethrow;
     }
   }
+
 }

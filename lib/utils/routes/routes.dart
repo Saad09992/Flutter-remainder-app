@@ -5,6 +5,7 @@ import 'package:firebase_remainder_app/pages/anime/video_player_page.dart';
 import 'package:firebase_remainder_app/pages/home_page.dart';
 import 'package:firebase_remainder_app/pages/auth/register_page.dart';
 import 'package:firebase_remainder_app/pages/auth/sign_in_page.dart';
+import 'package:firebase_remainder_app/pages/remainder_management_page.dart';
 import 'package:firebase_remainder_app/pages/testing/testing_add_page.dart';
 import 'package:firebase_remainder_app/pages/testing/testing_page.dart';
 import 'package:firebase_remainder_app/pages/testing/testing_video_page.dart';
@@ -49,6 +50,9 @@ class Routes {
       case RoutesName.testingVideoPage:
         return MaterialPageRoute(
             builder: (BuildContext context) => const  VideoApp());
+        case RoutesName.remainderManagementPage:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const  RemainderManagementPage());
       // display this if route is invalid
       default:
         return MaterialPageRoute(builder: (_) {
